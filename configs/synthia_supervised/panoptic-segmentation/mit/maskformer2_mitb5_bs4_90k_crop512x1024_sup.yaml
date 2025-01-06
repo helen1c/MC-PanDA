@@ -1,0 +1,25 @@
+_BASE_: ./maskformer2_R50_bs4_90k_crop512x1024_sup.yaml
+MODEL:
+  BACKBONE:
+    NAME: "D2MixVisionTransformer"
+  MIT:
+    EMBED_DIMS: [64, 128, 320, 512]
+    DEPTHS: [3, 6, 40, 3]
+    NUM_HEADS: [1, 2, 5, 8]
+    MLP_RATIOS: [4, 4, 4, 4]
+    SR_RATIOS: [8, 4, 2, 1]
+    DROP_PATH_RATE: 0.1
+    PRETRAIN_IMG_SIZE: 224
+  WEIGHTS: "./checkpoints/mit/mit_b5.pkl"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_FORMER:
+    NUM_OBJECT_QUERIES: 200
+    TEST:
+      SEMANTIC_ON: True
+      PANOPTIC_ON: True
+
+SOLVER:
+  CHECKPOINT_PERIOD: 20000
+
+OUTPUT_DIR: 'output/synthia_da/maskformer2_mitb5_bs4_20k_crop512x1024_sup'

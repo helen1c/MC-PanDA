@@ -1,0 +1,59 @@
+_BASE_: ./maskformer2_R50_bs4_90k_crop512x1024.yaml
+SEED: 10
+MODEL:
+  STUDENT:
+    LOSSES_PSEUDOLABELED: ["masks_with_conf", "labels"]
+    UNSUPERVISED_LOSS:
+      TAU_CONFIDENCE_THRESHOLD_THINGS: 0.99
+      TAU_CONFIDENCE_THRESHOLD_STUFF: 0.99
+      POINT_SAMPLING:
+        STRATEGY: "m2f_with_teacher_panoptic_uncertainty_filtering"
+        TEACHER_UNCERTAINTY_TYPE: "per_image"
+        TEACHER_UNCERTAINTY_THRESHOLD: -0.9
+  TEACHER:
+    EMA_DECAY: 0.999
+    BURN_IN_ITERS: 20000
+    WEIGHTS: "./pretrained/cityscapes-supervised/model_final.pth"
+    FILTER_SMALL_OBJECTS_AREA_THRESHOLD: 25.0
+  BACKBONE:
+    NAME: "D2SwinTransformer"
+  SWIN:
+    EMBED_DIM: 128
+    DEPTHS: [2, 2, 18, 2]
+    NUM_HEADS: [4, 8, 16, 32]
+    WINDOW_SIZE: 12
+    APE: False
+    DROP_PATH_RATE: 0.3
+    PATCH_NORM: True
+    PRETRAIN_IMG_SIZE: 384
+  WEIGHTS: "./m2f-da/checkpoints/swin/swin_base_patch4_window12_384_22k.pkl"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_FORMER:
+    NUM_OBJECT_QUERIES: 100
+    TEST:
+      SEMANTIC_ON: False
+      PANOPTIC_ON: True
+
+SOLVER:
+  MAX_ITER: 90000
+  CHECKPOINT_PERIOD: 90000
+  IMS_PER_BATCH: 2
+
+TEST:
+  EVAL_PERIOD: 30000
+
+UNLABELED_INPUT:
+  MIN_SIZE_TRAIN: !!python/object/apply:eval ["[int(x * 0.1 * 2048) for x in range(5, 21)]"]
+  MAX_SIZE_TRAIN: 8192
+  CROP:
+    ENABLED: True
+    SIZE: (512, 1024)
+    SINGLE_CATEGORY_MAX_AREA: 1.0
+  SEGMIX_ENABLED: True
+  SEGMIX_PROB: 1.0
+
+DATASETS:
+  TRAIN: ("cityscapes_fine_panoptic_train",)
+  TRAIN_UNLABELED: "mapillary_vistas_panoptic_train"
+  TEST: ("mapillary_vistas_panoptic_val_19cls",)
