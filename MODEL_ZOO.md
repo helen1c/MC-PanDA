@@ -84,7 +84,7 @@ For the **Cityscapes → Foggy** and **Cityscapes → Vistas** setups, the PQ (P
 <td align="center"><a href="https://ferhr-my.sharepoint.com/:f:/g/personal/imartinovic_fer_hr/EicIqx-yst9MsEWFRxjlNQcBAZbCEYSzALOWY7LV2L_lXQ?e=4mhIyz">model</a></td>
 </tr>
 <tr>
-<td align="left"><a href="configs/city_to_vistas/swin/maskformer2_swin-base_22k_bs4_90k_crop512x1024_conf.yaml">Cityscapes → Vistas</a></td>
+<td align="left"><a href="configs/city_to_vistas/panoptic-segmentation/swin/maskformer2_swin-base_22k_bs4_90k_crop512x1024_conf.yaml">Cityscapes → Vistas</a></td>
 <td align="center">Swin-B</td>
 <td align="center">90k</td>
 <td align="center">52.0</td>
