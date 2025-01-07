@@ -1,0 +1,33 @@
+_BASE_: ./maskformer2_R50_bs4_90k_crop512x1024_sup.yaml
+MODEL:
+  BACKBONE:
+    NAME: "D2SwinTransformer"
+  SWIN:
+    EMBED_DIM: 128
+    DEPTHS: [2, 2, 18, 2]
+    NUM_HEADS: [4, 8, 16, 32]
+    WINDOW_SIZE: 12
+    APE: False
+    DROP_PATH_RATE: 0.3
+    PATCH_NORM: True
+    PRETRAIN_IMG_SIZE: 384
+  WEIGHTS: "./checkpoints/swin/swin_base_patch4_window12_384_22k.pkl"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_FORMER:
+    NUM_OBJECT_QUERIES: 200
+    TEST:
+      SEMANTIC_ON: False
+      INSTANCE_ON: False
+      PANOPTIC_ON: True
+
+
+SOLVER:
+  CHECKPOINT_PERIOD: 20000
+  MAX_ITER: 20000
+  IMS_PER_BATCH: 4
+
+TEST:
+  EVAL_PERIOD: 5000
+
+OUTPUT_DIR: 'logging/synthia-supervised/m2f-swin-base-384-22k-bs4-20k'
