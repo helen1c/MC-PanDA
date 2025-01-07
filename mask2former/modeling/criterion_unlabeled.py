@@ -188,7 +188,6 @@ class SetCriterionPseudolabels(nn.Module):
         target_masks = target_masks[tgt_idx]
 
         loss_scaling_confidences = [t["loss_scaling_confidences"] for t in targets]
-        # Miraculously, this sorts the loss_scaling_confidences in the same way as the masks
         loss_scaling_confidences = torch.cat(
             [
                 confidences[tgt_idx[1][tgt_idx[0] == i]]
