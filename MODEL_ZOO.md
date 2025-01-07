@@ -21,7 +21,7 @@ Our paper also uses ImageNet pretrained models that are not part of Detectron2. 
 ### Panoptic Segmentation
 The paper reports results averaged over three seeds. Here, we provide a checkpoint for each source-target domain pair using a single seed. The results shown in the table correspond to these specific checkpoints and may differ from the averaged results presented in the paper, which are based on three runs. 
 
-For the **Cityscapes → Foggy** and **Cityscapes → Vistas** setups, the PQ (Panoptic Quality) is averaged over all 19 classes. In contrast, for the **SYNTHIA → (Cityscapes, Vistas)** setups, the PQ is averaged over the 16 classes available in the SYNTHIA dataset.
+For the **Cityscapes → Foggy** and **Cityscapes → Vistas** setups, the PQ (Panoptic Quality) is averaged over all 19 classes. In contrast, for the **SYNTHIA → (Cityscapes, Vistas)** setups, the PQ is averaged over the 16 classes available in the SYNTHIA dataset. Thus, when evaluating **Synthia → (Cityscapes, Vistas)** models, final result should be multiplied with 19/16.
 <table>
 <tbody>
 <tr>
